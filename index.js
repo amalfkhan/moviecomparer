@@ -69,19 +69,26 @@ const onMovieSelect = async (movie, summaryElement, side) => {
 };
 
 const runComparison = () => {
-  console.log("comparing");
+  const leftHandSideStats = document.querySelectorAll('#left-summary .notification' );
+  const rightHandSideStats = document.querySelectorAll('#right-summary .notification' );
+
+  leftHandSideStats.forEach((leftStat, index) => {
+    rightStat = rightHandSideStats[index];
+    const loser = +(leftStat.getAttribute("data-value")) < +(rightStat.getAttribute("data-value")) ? leftStat : rightStat;
+    loser.classList.remove('is-primary');
+    loser.classList.add('is-warning');
+  });
+
 }
 
 const movieTemplate = (movieDetails) => {
+  //what if any of these have no value!!!
   const numawardsarray = (movieDetails.Awards.match(/\d+/g)).map(Number);
   const numawards = numawardsarray.reduce((accumulator, currentValue) => accumulator + currentValue);
   const boxofficevalue = Number(movieDetails.BoxOffice.replace(/[^0-9\.]+/g, ""));
   const metascore = Number(movieDetails.Metascore);
   const rating = Number(movieDetails.imdbRating);
   const votes = Number(movieDetails.imdbVotes.replace(/,/g, ""));
-
-  console.log(numawardsarray);
-  console.log(numawards);
 
   return `
     <article class="media">
